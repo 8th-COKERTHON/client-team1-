@@ -39,7 +39,7 @@ export default function DigitalDetox() {
         건강한 디지털 습관을 만들어보세요.
       </p>
 
-      <div className="mt-10 flex flex-col gap-4">
+      <div className="mt-auto flex flex-col gap-4">
         <TimeCard
           icon="lower"
           label="폰을 내려놓는 시간"
@@ -55,7 +55,7 @@ export default function DigitalDetox() {
         />
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-8.5">
         <Button active>
           디지털 디톡스 시작하기
         </Button>
