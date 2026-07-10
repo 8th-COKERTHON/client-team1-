@@ -28,6 +28,7 @@ function toTeamCardMembers(members: HomeMember[]) {
   return members.map((member) => ({
     name: member.nickname,
     status: (member.isSuccess ? "done" : "waiting") as "done" | "waiting",
+    imageUrl: member.imageUrl,
   }));
 }
 
@@ -35,7 +36,11 @@ export default function Home() {
   const [sleepTime, setSleepTime] = useState<TimeValue>(DEFAULT_SLEEP_TIME);
   const [wakeTime, setWakeTime] = useState<TimeValue>(DEFAULT_WAKE_TIME);
   const [members, setMembers] = useState<
-    { name: string; status: "done" | "progress" | "waiting" }[]
+    {
+      name: string;
+      status: "done" | "progress" | "waiting";
+      imageUrl?: string | null;
+    }[]
   >([]);
   const [current, setCurrent] = useState(0);
   // 스테이지별 목표치가 아직 명세되지 않아 임시로 150 고정 (확인 필요)
@@ -60,13 +65,14 @@ export default function Home() {
         setWakeTime(fromApiTime(data.detoxEndTime));
         setMembers(toTeamCardMembers(data.members));
         setCurrent(data.totalBricks);
-        setTeamName(data.selectedTeamName);
+        setTeamName(data.selectedTeamName ?? undefined);
         if (data.popup.showPopup) {
           setFailurePopup(data.popup.failedMemberNames);
         }
       })
-      .catch(() => {
+      .catch((err) => {
         // 서버 조회 실패 시 로컬에 저장해둔 값을 대신 사용
+        console.error("getUserHome 실패:", err);
         if (cancelled) return;
         const stored = loadDetoxTimes();
         if (stored) {

@@ -1,9 +1,11 @@
 import PixelCastle from "./PixelCastle";
 import TeamProgressBar from "./TeamProgressBar";
+import defaultAvatar from "../assets/image.jpg";
 
 interface Member {
   name: string;
   status: "done" | "progress" | "waiting";
+  imageUrl?: string | null;
 }
 
 interface TeamCardProps {
@@ -61,19 +63,25 @@ export default function TeamCard({
             >
               <div className="relative h-12 w-12">
                 <div
-                  className={`h-12 w-12 rounded-2xl border ${style.border} ${style.bg}`}
-                />
-
-                <span
-                  className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-bold font-['Pretendard'] ${style.nameColor}`}
+                  className={`h-12 w-12 overflow-hidden rounded-2xl border ${style.border} ${style.bg}`}
                 >
-                  {member.name}
-                </span>
+                  <img
+                    src={member.imageUrl || defaultAvatar}
+                    alt={member.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
 
                 <div
                   className={`absolute bottom-0 right-0 h-3 w-3 rounded-md border-2 border-white ${style.dot}`}
                 />
               </div>
+
+              <span
+                className={`font-['Pretendard'] text-xs font-bold ${style.nameColor}`}
+              >
+                {member.name}
+              </span>
 
               <span
                 className={`font-['Pretendard'] text-xs font-bold ${style.labelColor}`}

@@ -13,7 +13,7 @@ export interface HomeMember {
   userId: number
   nickname: string
   isSuccess: boolean
-  imageUrl: string
+  imageUrl: string | null
 }
 
 export interface HomePopup {
@@ -25,8 +25,8 @@ export interface UserHome {
   mode: string
   detoxStartTime: string
   detoxEndTime: string
-  selectedTeamId: number
-  selectedTeamName: string
+  selectedTeamId: number | null
+  selectedTeamName: string | null
   totalBricks: number
   stage: number
   members: HomeMember[]
