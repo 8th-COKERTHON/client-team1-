@@ -26,7 +26,7 @@ function NameEmailForm({ onNext }: Props) {
       </div>
 
       {/* 제목 */}
-      <h1 className="mt-6 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
+      <h1 className="mt-7 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
         디지털 디톡스,
         <br />
         언제 시작할까요?

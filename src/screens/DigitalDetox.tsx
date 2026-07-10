@@ -17,7 +17,9 @@ export default function DigitalDetox() {
   });
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-16 pb-8">
+
+    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA] px-6 pt-14 pb-8">
+
       {/* 로고 */}
       <div className="mx-auto flex h-[70px] w-[70px] items-center justify-center rounded-full bg-[#F7FBEF]">
       <img
@@ -27,16 +29,17 @@ export default function DigitalDetox() {
       />
       </div>
 
-      <h1 className="mt-7 text-center font-['Pretendard'] text-[24px] font-bold leading-[135%] text-[#1F1F1F]">
-      디지털 디톡스,
-      <br />
-      언제 시작할까요?
+      {/* 제목 */}
+      <h1 className="mt-7 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
+        디지털 디톡스,
+        <br />
+        언제 시작할까요?
       </h1>
 
-      <p className="mt-4 text-center text-[#B7B7B7]">
-        매일의 오프라인 일정을 설정하고
-        <br />
-        건강한 디지털 습관을 만들어보세요.
+      <p className="mt-4 text-center text-[16px] leading-[170%] text-[#B7B7B7]">
+      매일의 오프라인 일정을 설정하고
+      <br />
+      건강한 디지털 습관을 만들어보세요.
       </p>
 
       <div className="mt-auto flex flex-col gap-4">
