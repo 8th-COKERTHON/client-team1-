@@ -10,7 +10,7 @@ interface DetoxTeamCardProps {
 function DetoxTeamCard({ members }: DetoxTeamCardProps) {
   return (
     <div
-      className="mx-4 flex flex-col items-center justify-center gap-2.5 rounded-[14px] bg-white p-4"
+      className="flex w-full flex-col items-center justify-center gap-2.5 rounded-[14px] bg-white p-4"
       style={{
         boxShadow:
           '0 16px 4px rgba(0,0,0,0), 0 10px 4px rgba(0,0,0,0.01), 0 6px 3px rgba(0,0,0,0.05), 0 3px 3px rgba(0,0,0,0.09), 0 1px 1px rgba(0,0,0,0.10)',
