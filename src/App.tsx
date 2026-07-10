@@ -3,7 +3,7 @@ import './App.css'
 function App() {
 
   return (
-    <div>홈화면</div>
+    <div>홈</div>
   )
 }
 export default App
