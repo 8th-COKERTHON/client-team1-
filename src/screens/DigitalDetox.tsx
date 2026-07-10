@@ -4,6 +4,7 @@ import Button from "../components/Button";
 import TimeCard, { type TimeValue } from "../components/TimeCard";
 import sprout from "../assets/sprout.png";
 import { saveDetoxTimes } from "../lib/detoxSchedule";
+import { createDetoxTime } from "../lib/detoxTimeApi";
 
 export default function DigitalDetox() {
   const navigate = useNavigate();
@@ -19,6 +20,26 @@ export default function DigitalDetox() {
     hour: 9,
     minute: 0,
   });
+
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleStart = async () => {
+    if (submitting) return;
+
+    setSubmitting(true);
+    setError(null);
+    saveDetoxTimes(sleepTime, wakeTime);
+
+    try {
+      await createDetoxTime(sleepTime, wakeTime);
+      navigate("/home");
+    } catch {
+      setError("저장에 실패했어요. 다시 시도해주세요.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
 
@@ -62,15 +83,13 @@ export default function DigitalDetox() {
         />
       </div>
 
+      {error && (
+        <p className="mt-4 text-center text-sm text-[#FF4755]">{error}</p>
+      )}
+
       <div className="mt-8.5">
-        <Button
-          active
-          onClick={() => {
-            saveDetoxTimes(sleepTime, wakeTime);
-            navigate("/home");
-          }}
-        >
-          디지털 디톡스 시작하기
+        <Button active={!submitting} onClick={handleStart}>
+          {submitting ? "저장 중..." : "디지털 디톡스 시작하기"}
         </Button>
       </div>
     </div>
