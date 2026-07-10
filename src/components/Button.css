@@ -1,0 +1,31 @@
+.next-button {
+  display: flex;
+  width: 342px;
+  padding: 16.5px 0 18.5px;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 12px;
+  background: #b7b7b7;
+  color: #6e6e6e;
+  font: 600 17px/1.35 Roboto, system-ui, sans-serif;
+  cursor: not-allowed;
+}
+
+.next-button[data-active='true'] {
+  background: #00cf76;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.next-button:focus-visible {
+  outline: 3px solid rgba(0, 207, 118, 0.28);
+  outline-offset: 3px;
+}
+
+@media (max-width: 370px) {
+  .next-button {
+    width: 100%;
+  }
+}
