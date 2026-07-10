@@ -3,21 +3,27 @@ import sprout from "../assets/sprout.png";
 
 interface TopBarProps {
   onCreateRoom?: () => void;
+  teamName?: string;
+  memberCount?: number;
 }
 
-export default function TopBar({ onCreateRoom }: TopBarProps) {
+export default function TopBar({
+  onCreateRoom,
+  teamName = "팀1",
+  memberCount = 4,
+}: TopBarProps) {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
         <div className="rounded-full bg-[#EAF8E8] px-3 py-1.5">
           <span className="text-sm font-semibold text-[#62C46A]">
-            {"\uD3001"}
+            {teamName}
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           <button className="rounded-full bg-[#F3F3F3] px-3 py-1.5 text-sm font-medium">
-            {"4\uBA85"}
+            {memberCount}명
           </button>
 
           <button
@@ -35,12 +41,12 @@ export default function TopBar({ onCreateRoom }: TopBarProps) {
           <img src={sprout} alt="sprout" className="h-7 w-7" />
 
           <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">
-            {"\uB514\uC801"}
+            디적
           </h1>
         </div>
 
         <p className="ml-9 mt-1 text-[13px] font-medium text-[#8A8A8A]">
-          {"\uB514\uC9C0\uD138 \uB514\uD1A1\uC2A4 \uCC4C\uB9B0\uC9C0"}
+          디지털 디톡스 챌린지
         </p>
       </div>
     </div>

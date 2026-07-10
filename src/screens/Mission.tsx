@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MissionHeader from '../components/MissionHeader'
 import MissionCard from '../components/MissionCard'
 import PhotoUpload from '../components/PhotoUpload'
+import CameraCapture from '../components/CameraCapture'
 import Button from '../components/Button'
 import SecondaryButton from '../components/SecondaryButton'
 import toothbrush from '../assets/Toothbrush.svg'
-import { uploadImage } from '../lib/imageUpload'
 import {
   getTodayMission,
   registerMissionCertification,
@@ -15,9 +15,9 @@ import {
 
 function Mission() {
   const navigate = useNavigate()
-  const inputRef = useRef<HTMLInputElement>(null)
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
+  const [isCameraOpen, setIsCameraOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [title, setTitle] = useState('오늘의 미션')
@@ -42,14 +42,11 @@ function Mission() {
     }
   }, [])
 
-  const openPicker = () => inputRef.current?.click()
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const selected = e.target.files?.[0]
-    if (!selected) return
-    setFile(selected)
+  const handleCapture = (captured: File) => {
+    setFile(captured)
     setUploadError(null)
-    setPreview(URL.createObjectURL(selected))
+    setPreview(URL.createObjectURL(captured))
+    setIsCameraOpen(false)
   }
 
   const handleUpload = async () => {
@@ -59,11 +56,9 @@ function Mission() {
     setUploadError(null)
 
     try {
-      const imageUrl = await uploadImage(file)
-
       const certification = hasCertifiedBefore
-        ? await updateMissionCertification(imageUrl)
-        : await registerMissionCertification(imageUrl)
+        ? await updateMissionCertification(file)
+        : await registerMissionCertification(file)
 
       setHasCertifiedBefore(true)
       navigate('/detox-active', {
@@ -77,7 +72,7 @@ function Mission() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col bg-[#F7F8FA]">
+    <div className="mx-auto flex min-h-screen w-full max-w-97.5 flex-col bg-[#F7F8FA]">
       <MissionHeader
         title="미션이 도착했어요!"
         description="오늘은 어떤 미션이 도착했을까요?"
@@ -96,12 +91,7 @@ function Mission() {
           }
         />
 
-        <PhotoUpload
-          preview={preview}
-          inputRef={inputRef}
-          onClick={openPicker}
-          onChange={handleChange}
-        />
+        <PhotoUpload preview={preview} onClick={() => setIsCameraOpen(true)} />
 
         {uploadError && (
           <p className="mx-4 text-center text-sm text-[#FF4755]">{uploadError}</p>
@@ -109,13 +99,20 @@ function Mission() {
       </div>
 
       <div className="mx-4 mt-auto flex gap-2.5 pb-8">
-        <SecondaryButton onClick={openPicker}>다시 찍기</SecondaryButton>
+        <SecondaryButton onClick={() => setIsCameraOpen(true)}>다시 찍기</SecondaryButton>
         <div className="flex-1">
           <Button active={file !== null && !uploading} onClick={handleUpload}>
             {uploading ? '업로드 중...' : '업로드'}
           </Button>
         </div>
       </div>
+
+      {isCameraOpen && (
+        <CameraCapture
+          onCapture={handleCapture}
+          onClose={() => setIsCameraOpen(false)}
+        />
+      )}
     </div>
   )
 }

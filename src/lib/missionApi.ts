@@ -1,4 +1,4 @@
-import { apiGet, apiPatch, apiPost } from './api'
+import { apiGet, apiPatchForm, apiPost, apiPostForm } from './api'
 
 /**
  * ASSIGNED: 미션이 배정됐지만 아직 확인/인증 전
@@ -69,18 +69,16 @@ export function getTodayMissionStatus() {
   return apiGet<MissionStatus>('/api/missions/today/status')
 }
 
-export function registerMissionCertification(imageUrl: string) {
-  return apiPost<MissionCertification, { imageUrl: string }>(
-    '/api/missions/today/certification',
-    { imageUrl },
-  )
+export function registerMissionCertification(image: File) {
+  const formData = new FormData()
+  formData.append('image', image)
+  return apiPostForm<MissionCertification>('/api/missions/today/certification', formData)
 }
 
-export function updateMissionCertification(imageUrl: string) {
-  return apiPatch<MissionRecertification, { imageUrl: string }>(
-    '/api/missions/today/certification',
-    { imageUrl },
-  )
+export function updateMissionCertification(image: File) {
+  const formData = new FormData()
+  formData.append('image', image)
+  return apiPatchForm<MissionRecertification>('/api/missions/today/certification', formData)
 }
 
 export function confirmMission() {

@@ -1,13 +1,9 @@
-import type { ChangeEvent, RefObject } from 'react'
-
 interface PhotoUploadProps {
   preview: string | null
-  inputRef: RefObject<HTMLInputElement | null>
   onClick: () => void
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-function PhotoUpload({ preview, inputRef, onClick, onChange }: PhotoUploadProps) {
+function PhotoUpload({ preview, onClick }: PhotoUploadProps) {
   return (
     <button
       type="button"
@@ -16,7 +12,7 @@ function PhotoUpload({ preview, inputRef, onClick, onChange }: PhotoUploadProps)
       style={{ boxShadow: '0 3px 1px rgba(0,0,0,0.01), 0 2px 1px rgba(0,0,0,0.05)' }}
     >
       {preview ? (
-        <img src={preview} alt="선택한 사진" className="h-full w-full object-cover" />
+        <img src={preview} alt="찍은 사진" className="h-full w-full object-cover" />
       ) : (
         <>
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00CF76]">
@@ -30,18 +26,10 @@ function PhotoUpload({ preview, inputRef, onClick, onChange }: PhotoUploadProps)
             </svg>
           </span>
           <span className="font-['Pretendard'] text-base font-semibold text-[#1F1F1F]">
-            사진 추가
+            사진 촬영하기
           </span>
         </>
       )}
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={onChange}
-        className="hidden"
-      />
     </button>
   )
 }

@@ -1,16 +1,16 @@
 import { ArrowLeft, Copy, Send } from "lucide-react";
 import { useState } from "react";
+import { createTeam, updateActiveTeam } from "../lib/teamApi";
 
 const TEXT = {
-  title: "\uBC29\uB9CC\uB4E4\uAE30",
-  label: "\uBC29 \uC774\uB984",
-  placeholder: "\uBC29 \uC774\uB984\uC744 \uC785\uB825\uD558\uC138\uC694.",
-  confirm: "\uD655\uC778",
-  done: "\uC644\uB8CC",
-  completeTitle: "\uBC29\uC774 \uB9CC\uB4E4\uC5B4\uC84C\uC5B4\uC694!",
-  completeLine1: "\uAC19\uC774 \uB514\uC9C0\uD138 \uB514\uD1A1\uC2A4\uB97C",
-  completeLine2: "\uC2DC\uC791\uD560 \uD300\uC6D0\uC5D0\uAC8C \uBCF4\uB0B4\uBCF4\uC138\uC694!",
-  inviteCode: "123456789!",
+  title: "방만들기",
+  label: "방 이름",
+  placeholder: "방 이름을 입력하세요.",
+  confirm: "확인",
+  done: "완료",
+  completeTitle: "방이 만들어졌어요!",
+  completeLine1: "같이 디지털 디톡스를",
+  completeLine2: "시작할 팀원에게 보내보세요!",
 };
 
 interface CreateRoomProps {
@@ -19,8 +19,28 @@ interface CreateRoomProps {
 
 export default function CreateRoom({ onBack }: CreateRoomProps) {
   const [roomName, setRoomName] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
   const [isComplete, setIsComplete] = useState(false);
+
   const isActive = roomName.trim().length > 0;
+
+  const handleCreate = async () => {
+    try {
+      const res = await createTeam(roomName);
+
+      console.log("응답:", res);
+
+      const team = res.data;
+
+      await updateActiveTeam(team.teamId);
+
+      setInviteCode(team.inviteCode);
+      setIsComplete(true);
+    } catch (err) {
+      console.error(err);
+      alert("방 생성에 실패했습니다.");
+    }
+  };
 
   if (isComplete) {
     return (
@@ -28,42 +48,44 @@ export default function CreateRoom({ onBack }: CreateRoomProps) {
         <button
           type="button"
           onClick={onBack}
-          aria-label="back"
-          className="ml-4 mt-[18px] flex h-[38px] w-[38px] items-center justify-center rounded-[14px] text-[#1F1F1F]"
+          className="ml-4 mt-[18px] flex h-[38px] w-[38px] items-center justify-center rounded-[14px]"
         >
-          <ArrowLeft size={20} strokeWidth={2.4} />
+          <ArrowLeft size={20} />
         </button>
 
         <main className="flex flex-1 flex-col items-center px-4">
           <div className="mt-[130px] flex flex-col items-center gap-4">
-            <Send size={90} strokeWidth={2.1} className="-rotate-[8deg] text-[#00CF76]" />
-            <div className="flex flex-col items-center gap-2">
-              <h1 className="text-center text-[28px] font-bold leading-[135%] text-[#252525]">
-                {TEXT.completeTitle}
-              </h1>
-              <p className="text-center text-[13px] font-normal leading-[150%] text-[#494949]">
-                {TEXT.completeLine1}
-                <br />
-                {TEXT.completeLine2}
-              </p>
-            </div>
+            <Send size={90} className="-rotate-[8deg] text-[#00CF76]" />
+
+            <h1 className="text-center text-[28px] font-bold">
+              {TEXT.completeTitle}
+            </h1>
+
+            <p className="text-center text-[13px] text-[#494949]">
+              {TEXT.completeLine1}
+              <br />
+              {TEXT.completeLine2}
+            </p>
           </div>
 
           <div className="mt-[66px] flex h-[70px] w-full items-center justify-between rounded-xl bg-[#F9F7E8] p-4">
-            <span className="text-[17px] font-medium leading-[150%] text-[#252525]">
-              {TEXT.inviteCode}
+            <span className="text-[17px] font-medium">
+              {inviteCode}
             </span>
-            <button type="button" aria-label="copy" className="flex h-[38px] w-[38px] items-center justify-center rounded-[14px] text-[#252525]">
-              <Copy size={20} strokeWidth={2.2} />
+
+            <button
+              type="button"
+              onClick={() => navigator.clipboard.writeText(inviteCode)}
+            >
+              <Copy size={20} />
             </button>
           </div>
         </main>
 
-        <div className="h-[110px] bg-[#F7F8FA] px-6 pt-[11px]">
+        <div className="px-6 pb-8">
           <button
-            type="button"
             onClick={onBack}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 pb-5 pt-4 text-center font-['Roboto'] text-base font-semibold leading-6 text-white"
+            className="w-full rounded-xl bg-[#00CF76] py-4 font-semibold text-white"
           >
             {TEXT.done}
           </button>
@@ -77,37 +99,34 @@ export default function CreateRoom({ onBack }: CreateRoomProps) {
       <button
         type="button"
         onClick={onBack}
-        aria-label="back"
-        className="ml-4 mt-[18px] flex h-[38px] w-[38px] items-center justify-center rounded-[14px] text-[#1F1F1F]"
+        className="ml-4 mt-[18px] flex h-[38px] w-[38px] items-center justify-center rounded-[14px]"
       >
-        <ArrowLeft size={20} strokeWidth={2.4} />
+        <ArrowLeft size={20} />
       </button>
 
-      <main className="flex flex-1 flex-col px-4 pt-[1px]">
-        <h1 className="text-[28px] font-bold leading-[135%] text-[#494949]">{TEXT.title}</h1>
+      <main className="flex flex-1 flex-col px-4">
+        <h1 className="text-[28px] font-bold">{TEXT.title}</h1>
 
-        <label className="mt-[32px] text-[17px] font-semibold leading-[135%] text-[#494949]">
+        <label className="mt-8 text-[17px] font-semibold">
           {TEXT.label}
         </label>
+
         <input
-          type="text"
           value={roomName}
-          onChange={(event) => setRoomName(event.target.value)}
+          onChange={(e) => setRoomName(e.target.value)}
           placeholder={TEXT.placeholder}
-          className="mt-2 h-11 w-full rounded-xl border-0 bg-[rgba(97,97,97,0.1)] px-5 py-3 text-[13px] font-normal leading-[150%] text-[#494949] outline-none placeholder:text-[#949494]"
+          className="mt-2 h-11 rounded-xl bg-gray-100 px-5 outline-none"
         />
       </main>
 
-      <div className="h-[110px] bg-[#F7F8FA] px-6 pt-[11px]">
+      <div className="px-6 pb-8">
         <button
-          type="button"
           disabled={!isActive}
-          data-active={isActive}
-          onClick={() => setIsComplete(true)}
-          className={`inline-flex w-full items-center justify-center gap-2 rounded-xl text-center font-['Roboto'] font-semibold ${
+          onClick={handleCreate}
+          className={`w-full rounded-xl py-4 font-semibold ${
             isActive
-              ? "bg-emerald-500 pb-5 pt-4 text-base leading-6 text-white"
-              : "bg-[#B7B7B7] pb-[18.5px] pt-[16.5px] text-[17px] leading-[135%] text-[#6E6E6E]"
+              ? "bg-[#00CF76] text-white"
+              : "bg-gray-300 text-gray-500"
           }`}
         >
           {TEXT.confirm}
