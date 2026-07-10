@@ -40,17 +40,6 @@ export default function Home() {
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
   const [isJoiningRoom, setIsJoiningRoom] = useState(false);
   const [isRoomMenuOpen, setIsRoomMenuOpen] = useState(false);
-
-  const stored = loadDetoxTimes();
-
-  const [sleepTime, setSleepTime] = useState(
-    stored?.sleepTime ?? DEFAULT_SLEEP_TIME,
-  );
-
-  const [wakeTime, setWakeTime] = useState(
-    stored?.wakeTime ?? DEFAULT_WAKE_TIME,
-  );
-
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {

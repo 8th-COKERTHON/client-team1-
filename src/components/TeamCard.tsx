@@ -1,4 +1,4 @@
-import PixelCat from "./PixelCat";
+import PixelCastle from "./PixelCastle";
 import TeamProgressBar from "./TeamProgressBar";
 
 interface Member {
@@ -87,10 +87,10 @@ export default function TeamCard({
 
 
       <div className="mt-6 flex justify-center">
-        <PixelCat current={current} total={total} />
+        <PixelCastle current={current} total={total} />
       </div>
 
-      <div className="mt-4">
+      <div className="mt-2">
         <TeamProgressBar current={current} total={total} />
       </div>
     </section>
