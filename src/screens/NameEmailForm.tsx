@@ -20,15 +20,15 @@ function NameEmailForm({ onNext }: Props) {
       </div>
 
       <h1 className="mt-7 text-center text-[24px] font-bold leading-[135%] text-[#2E2E2E]">
-        디지털 디톡스
+        잠금 어플, 
         <br />
-        언제 시작할까요?
+        또 지워버렸나요?
       </h1>
 
       <p className="mt-4 text-center text-[16px] leading-[170%] text-[#B7B7B7]">
-        매일의 오프라인 일정을 설정하고
+        막는 디톡스는 이제 그만.
         <br />
-        건강한 디지털 습관을 만들어봐요.
+        작은 행동으로 무의식적인 뒤적임의 흐름을 바꿔봐요
       </p>
 
       <div className="mt-auto flex flex-col gap-6">

@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MissionHeader from '../components/MissionHeader'
 import MissionCard from '../components/MissionCard'
@@ -7,6 +7,11 @@ import Button from '../components/Button'
 import SecondaryButton from '../components/SecondaryButton'
 import toothbrush from '../assets/Toothbrush.svg'
 import { uploadImage } from '../lib/imageUpload'
+import {
+  getTodayMission,
+  registerMissionCertification,
+  updateMissionCertification,
+} from '../lib/missionApi'
 
 function Mission() {
   const navigate = useNavigate()
@@ -15,6 +20,27 @@ function Mission() {
   const [preview, setPreview] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [title, setTitle] = useState('오늘의 미션')
+  const [hasCertifiedBefore, setHasCertifiedBefore] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+
+    getTodayMission()
+      .then((res) => {
+        if (cancelled) return
+        setTitle(res.data.title)
+        // status가 처음 배정 상태(ASSIGNED)가 아니면 이미 인증 사진을 등록한 적이 있다고 판단
+        setHasCertifiedBefore(res.data.status !== 'ASSIGNED')
+      })
+      .catch(() => {
+        // 조회 실패 시 기본 문구를 그대로 사용
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const openPicker = () => inputRef.current?.click()
 
@@ -33,8 +59,16 @@ function Mission() {
     setUploadError(null)
 
     try {
-      await uploadImage(file)
-      navigate('/detox-active')
+      const imageUrl = await uploadImage(file)
+
+      const certification = hasCertifiedBefore
+        ? await updateMissionCertification(imageUrl)
+        : await registerMissionCertification(imageUrl)
+
+      setHasCertifiedBefore(true)
+      navigate('/detox-active', {
+        state: { detoxEndTime: certification.data.detoxEndTime },
+      })
     } catch {
       setUploadError('업로드에 실패했어요. 다시 시도해주세요.')
     } finally {
@@ -52,7 +86,7 @@ function Mission() {
       <div className="mt-4 flex flex-col gap-5">
         <MissionCard
           icon={<img src={toothbrush} alt="toothbrush" className="h-8 w-8" />}
-          title="양치하기 미션"
+          title={title}
           description={
             <>
               미션을 완료했나요?

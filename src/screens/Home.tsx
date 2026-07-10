@@ -4,11 +4,7 @@ import TeamCard from "../components/TeamCard";
 import HomeButton from "../components/HomeButton";
 import TimeSummary from "../components/TimeSummary";
 import EditDetoxTimesModal from "../components/EditDetoxTimesModal";
-import {
-  loadDetoxTimes,
-  saveDetoxTimes,
-  scheduleDetoxStart,
-} from "../lib/detoxSchedule";
+import { loadDetoxTimes, saveDetoxTimes } from "../lib/detoxSchedule";
 import type { TimeValue } from "../components/TimeCard";
 
 const DEFAULT_SLEEP_TIME: TimeValue = { period: "오후", hour: 9, minute: 0 };
@@ -26,7 +22,6 @@ export default function Home() {
 
   const handleDone = () => {
     saveDetoxTimes(sleepTime, wakeTime);
-    scheduleDetoxStart(sleepTime);
     setIsEditing(false);
   };
 

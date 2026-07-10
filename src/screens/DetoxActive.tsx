@@ -1,7 +1,24 @@
+import { useLocation } from 'react-router-dom'
 import handphone from '../assets/handphone.svg'
 import DetoxTeamCard from '../components/DetoxTeamCard'
 
+interface DetoxActiveState {
+  detoxEndTime?: string
+}
+
+function formatDetoxEndTime(raw: string) {
+  const date = new Date(raw)
+  if (Number.isNaN(date.getTime())) return raw
+
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  return `${hours}:${minutes}`
+}
+
 function DetoxActive() {
+  const location = useLocation()
+  const detoxEndTime = (location.state as DetoxActiveState | null)?.detoxEndTime
+
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[390px] flex-col items-center bg-[#00CF76] px-4 pt-41.75">
       <div
@@ -16,7 +33,7 @@ function DetoxActive() {
       </h1>
 
       <p className="mt-4 text-center font-['Pretendard'] text-2xl font-bold leading-[135%] text-white">
-        07:00에 해제돼요.
+        {detoxEndTime ? formatDetoxEndTime(detoxEndTime) : '07:00'}에 해제돼요.
       </p>
 
       <div className="mt-7.25">
