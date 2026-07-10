@@ -1,8 +1,13 @@
+import type { ReactNode } from "react";
 import sprout from "../../assets/sprout.png";
 
-export default function OnboardingInfo() {
+interface OnboardingInfoProps {
+  children?: ReactNode;
+}
+
+export default function OnboardingInfo({ children }: OnboardingInfoProps) {
   return (
-    <div className="flex min-h-screen flex-col px-5 pt-12">
+    <div className="flex min-h-screen flex-col px-5 pt-12 pb-8">
       <img
         src={sprout}
         alt="sprout"
@@ -20,6 +25,8 @@ export default function OnboardingInfo() {
         <br />
         건강한 디지털 습관을 만들어보세요.
       </p>
+
+      {children}
     </div>
   );
 }

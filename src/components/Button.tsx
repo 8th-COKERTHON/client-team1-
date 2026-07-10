@@ -9,7 +9,7 @@ function Button({ active = false, className = '', children, ...rest }: ButtonPro
     <button
       {...rest}
       disabled={!active}
-      className={`h-[58px] w-full rounded-xl font-['Roboto'] text-[17px] font-semibold leading-[135%] transition-colors ${
+      className={`cursor-pointer h-[58px] w-full rounded-xl font-['Roboto'] text-[17px] font-semibold leading-[135%] transition-colors ${
         active ? 'bg-[#00CF76] text-white' : 'bg-[#B7B7B7] text-[#6E6E6E]'
       } ${className}`}
     >

@@ -13,8 +13,8 @@ function NameEmailForm({ onNext }: NameEmailFormProps) {
   const isValid = name.trim() !== '' && email.trim() !== ''
 
   return (
-    <div className="flex min-h-[844px] flex-col px-6 pt-12">
-      <div className="flex flex-col gap-5.25">
+    <>
+      <div className="mt-auto flex flex-col gap-5.25">
         <InputField
           label="이름"
           name="name"
@@ -32,12 +32,12 @@ function NameEmailForm({ onNext }: NameEmailFormProps) {
         />
       </div>
 
-      <div className="mt-auto pb-10 pt-8.75">
+      <div className="pt-8.75">
         <Button active={isValid} onClick={onNext}>
           다음
         </Button>
       </div>
-    </div>
+    </>
   )
 }
 
