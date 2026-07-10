@@ -2,8 +2,9 @@ import { useState } from 'react'
 import sprout from '../assets/sprout.png'
 import Button from '../components/Button'
 import InputField from '../components/InputField'
-import { createUser, saveUserId } from '../lib/userApi'
+import { clearUserId, createUser, saveUserId, updateUserEmail } from '../lib/userApi'
 import { ApiError } from '../lib/api'
+import { resetDeviceId } from '../lib/deviceId'
 
 interface Props {
   onNext: () => void
@@ -26,6 +27,13 @@ function NameEmailForm({ onNext }: Props) {
     try {
       const res = await createUser(name)
       saveUserId(res.data.userId)
+
+      try {
+        await updateUserEmail(res.data.userId, email)
+      } catch {
+        // 이메일 저장 실패해도 가입 자체는 완료된 상태라 다음 단계로 진행
+      }
+
       onNext()
     } catch (err) {
       setError(err instanceof ApiError ? err.message : '가입에 실패했어요. 다시 시도해주세요.')
@@ -75,6 +83,18 @@ function NameEmailForm({ onNext }: Props) {
         <Button active={active} onClick={handleNext}>
           {submitting ? '가입 중...' : '다음'}
         </Button>
+
+        <button
+          type="button"
+          onClick={() => {
+            resetDeviceId()
+            clearUserId()
+            window.location.reload()
+          }}
+          className="text-center text-xs text-[#B7B7B7] underline"
+        >
+          (테스트) 새 기기로 초기화
+        </button>
       </div>
     </div>
   )

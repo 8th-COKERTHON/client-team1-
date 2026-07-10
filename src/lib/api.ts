@@ -72,3 +72,12 @@ export function apiPatch<TData, TBody = unknown>(
     body: body === undefined ? undefined : JSON.stringify(body),
   })
 }
+
+// FormData 요청은 Content-Type을 직접 지정하지 않아야 브라우저가 boundary를 자동으로 채워줌
+export function apiPostForm<TData>(path: string, formData: FormData): Promise<ApiResponse<TData>> {
+  return request<TData>(path, { method: 'POST', body: formData })
+}
+
+export function apiPatchForm<TData>(path: string, formData: FormData): Promise<ApiResponse<TData>> {
+  return request<TData>(path, { method: 'PATCH', body: formData })
+}
