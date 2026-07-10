@@ -1,25 +1,22 @@
-import './Button.css'
+import type { ButtonHTMLAttributes } from 'react'
 
-type NextButtonProps = {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean
-  label?: string
-  onClick?: () => void
 }
 
-export function NextButton({
-  active = false,
-  label = '다음',
-  onClick,
-}: NextButtonProps) {
+function Button({ active = false, className = '', children, ...rest }: ButtonProps) {
   return (
     <button
-      type="button"
-      className="next-button"
-      data-active={active}
+      {...rest}
       disabled={!active}
-      onClick={onClick}
+      className={`h-[58px] w-full rounded-xl font-['Roboto'] text-[17px] font-semibold leading-[135%] transition-colors ${
+        active ? 'bg-[#00CF76] text-white' : 'bg-[#B7B7B7] text-[#6E6E6E]'
+      } ${className}`}
     >
-      {label}
+      {children}
     </button>
   )
 }
+
+export default Button
+

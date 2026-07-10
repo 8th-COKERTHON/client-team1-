@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations'),
+    url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   color-scheme: light dark;
@@ -28,7 +37,7 @@ body {
   max-width: 390px;
   min-height: 844px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--Primary-Brand-sub, #f7f8fa);
   box-sizing: border-box;
   overflow-x: hidden;
 }
